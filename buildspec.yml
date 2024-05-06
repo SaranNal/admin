@@ -1,9 +1,43 @@
+# version: 0.2
+
+# phases:
+#   install:
+#     runtime-versions:
+#       docker: 20
+#   pre_build:
+#     commands:
+#       - echo Logging in to Amazon ECR...
+#       - aws --version
+#       - $(aws ecr get-login --region us-east-1 --no-include-email)
+#       - REPOSITORY_URI=729047448122.dkr.ecr.us-east-1.amazonaws.com/saran-admin
+#       - if echo $CODEBUILD_INITIATOR | grep -qe "-development$"; then REPOSITORY_URI=$REPOSITORY_URI-development;ENV_TYPE=development;fi;
+#       - if echo $CODEBUILD_INITIATOR | grep -qe "-staging$"; then REPOSITORY_URI=$REPOSITORY_URI-staging;ENV_TYPE=staging;fi;
+#       - if echo $CODEBUILD_INITIATOR | grep -qe "-production$"; then REPOSITORY_URI=$REPOSITORY_URI-production;ENV_TYPE=production;fi;
+#       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+#       - IMAGE_TAG=${COMMIT_HASH:=latest}
+#       - echo $REPOSITORY_URI
+#   build:
+#     commands:
+#       - echo Build started on `date`
+#       - echo Building the Docker image...
+#       - aws lambda invoke --function-name reblie-web-read-env --invocation-type RequestResponse --region us-east-1 --payload "{\"application\":\"${ENV_TYPE}\", \"repoName\":\"saran-admin\" }" app_env.json
+#       - cat app_env.json | jq -r '.body' >> .env
+#       - cat .env
+#       - docker build -t $REPOSITORY_URI:latest .
+#       - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
+#   post_build:
+#     commands:
+#       - echo Build completed on `date`
+#       - echo Pushing the Docker images...
+#       - docker push $REPOSITORY_URI:latest
+#       - docker push $REPOSITORY_URI:$IMAGE_TAG
+#       - echo Writing image definitions file...
+#       - printf '[{"name":"saran-admin-$ENV_TYPE","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
+# artifacts:
+#     files: imagedefinitions.json
 version: 0.2
 
 phases:
-  install:
-    runtime-versions:
-      docker: 20
   pre_build:
     commands:
       - echo Logging in to Amazon ECR...
@@ -16,6 +50,10 @@ phases:
       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
       - IMAGE_TAG=${COMMIT_HASH:=latest}
       - echo $REPOSITORY_URI
+
+runtime-versions:
+  docker: 20
+
   build:
     commands:
       - echo Build started on `date`
@@ -25,6 +63,7 @@ phases:
       - cat .env
       - docker build -t $REPOSITORY_URI:latest .
       - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
+
   post_build:
     commands:
       - echo Build completed on `date`
@@ -33,5 +72,7 @@ phases:
       - docker push $REPOSITORY_URI:$IMAGE_TAG
       - echo Writing image definitions file...
       - printf '[{"name":"saran-admin-$ENV_TYPE","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
+
 artifacts:
-    files: imagedefinitions.json
+  files: imagedefinitions.json
+
