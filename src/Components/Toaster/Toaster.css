@@ -1,0 +1,6 @@
+.toaster-class {
+    position: absolute;
+    z-index: 999;
+    top: 90vh;
+    left: 40%;
+}

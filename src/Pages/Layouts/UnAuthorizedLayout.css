@@ -1,0 +1,12 @@
+.unAuthorizedLayout-root {
+    height: 100vh
+}
+
+.space-between {
+    display: flex;
+    justify-content: space-between;
+}
+
+.custom-card {
+    width: 525px;
+}
