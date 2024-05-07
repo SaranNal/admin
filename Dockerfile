@@ -22,7 +22,8 @@ COPY ./.env ./build/.env
 
 #stage2
 # FROM ACCOUNT_NO.dkr.ecr.us-east-1.amazonaws.com/reblie-nginx-base:latest
-FROM ngnix-base:latest
+# FROM ngnix-base:latest
+FROM 729047448122.dkr.ecr.us-east-1.amazonaws.com/saran-nginx-base-image:latest
 
 COPY ./admin-nginx.conf /etc/nginx/nginx.conf
 
