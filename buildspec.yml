@@ -33,5 +33,6 @@ phases:
       - docker push $REPOSITORY_URI:$IMAGE_TAG
       - echo Writing image definitions file...
       - printf '[{"name":"saran-admin-$ENV_TYPE","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
+      - aws s3 cp imagedefinitions.json s3://saran-combined-pipeline-artifact-$ENV_TYPE/imagedefinitions.json  --metadata '{"codepipeline-artifact-revision-summary":"Initiated by Admin portal ImageID - '$IMAGE_TAG'"}';
 artifacts:
     files: imagedefinitions.json
