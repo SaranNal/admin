@@ -1,7 +1,8 @@
 # stage1 as builder
 # FROM ACCOUNT_NO.dkr.ecr.us-east-1.amazonaws.com/reblie-node-base:latest as builder
 # FROM node-base:latest as builder
-FROM 729047448122.dkr.ecr.us-east-1.amazonaws.com/saran-node-base-image:latest as builder
+# FROM 729047448122.dkr.ecr.us-east-1.amazonaws.com/saran-node-base-image:latest as builder
+FROM 729047448122.dkr.ecr.us-east-1.amazonaws.com/base-test:latest as builder
 
 # RUN mkdir /app
 
