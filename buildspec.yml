@@ -23,6 +23,11 @@ phases:
       - aws lambda invoke --function-name reblie-web-read-env --invocation-type RequestResponse --region us-east-1 --payload "{\"application\":\"${ENV_TYPE}\", \"repoName\":\"saran-admin\" }" app_env.json
       - cat app_env.json | jq -r '.body' >> .env
       - cat .env
+      - sed -i 's|"homepage"[^,$]*|"homepage":"admin"|g' ./package.json
+      - cat package.json
+      - sed -i "s#ACCOUNT_NO#$ACCOUNT_ID#g" ./Dockerfile
+      - sed -i "s#COMMIT_ID#$COMMIT_HASH#g" ./Dockerfile
+      - sed -i "s#DEPLOYMENT_URL#$COMMIT_HASH#g" ./.env
       - docker build -t $REPOSITORY_URI:latest .
       - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
   post_build:
