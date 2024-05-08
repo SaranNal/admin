@@ -1,7 +1,7 @@
 {
   "name": "reblie-frontend",
   "version": "0.1.0",
-  "homepage": ".",
+  "homepage": "admin",
   "private": true,
   "dependencies": {
     "@auth0/auth0-spa-js": "2.1.3",
