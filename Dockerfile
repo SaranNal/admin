@@ -31,7 +31,7 @@ COPY ./admin-nginx.conf /etc/nginx/nginx.conf
 ## Remove default nginx index page
 RUN rm -rf /usr/share/nginx/html/*
 
-ARG COMMIT_HASH=123456
+ARG COMMIT_HASH=COMMIT_ID
 
 RUN mkdir -p /usr/share/nginx/html/admin/${COMMIT_HASH}
 
