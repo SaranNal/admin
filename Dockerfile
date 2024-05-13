@@ -27,7 +27,7 @@ RUN mkdir -p /usr/share/nginx/html/admin/${COMMIT_HASH}
 # Copy from the stahg 1
 RUN cp ./build/index.html /usr/share/nginx/html/admin
 
-RUN cp -r ./build/ /usr/share/nginx/html/admin/${COMMIT_HASH}
+RUN cp -r ./build/* /usr/share/nginx/html/admin/${COMMIT_HASH}
 
 EXPOSE 8081
 
