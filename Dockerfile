@@ -1,10 +1,4 @@
-# stage1 as builder
-# FROM ACCOUNT_NO.dkr.ecr.us-east-1.amazonaws.com/reblie-node-base:latest as builder
-# FROM node-base:latest as builder
-FROM 729047448122.dkr.ecr.us-east-1.amazonaws.com/saran-node-base-image:latest as builder
-# FROM 729047448122.dkr.ecr.us-east-1.amazonaws.com/base-test:latest as builder
-
-# RUN mkdir /app
+FROM 729047448122.dkr.ecr.us-east-1.amazonaws.com/saran-app-base-image:latest
 
 WORKDIR /app
 
@@ -21,11 +15,6 @@ RUN npm run build
 
 COPY ./.env ./build/.env
 
-#stage2
-# FROM ACCOUNT_NO.dkr.ecr.us-east-1.amazonaws.com/reblie-nginx-base:latest
-# FROM ngnix-base:latest
-FROM 729047448122.dkr.ecr.us-east-1.amazonaws.com/saran-nginx-base-image:latest
-
 COPY ./admin-nginx.conf /etc/nginx/nginx.conf
 
 ## Remove default nginx index page
@@ -36,10 +25,10 @@ ARG COMMIT_HASH=COMMIT_ID
 RUN mkdir -p /usr/share/nginx/html/admin/${COMMIT_HASH}
 
 # Copy from the stahg 1
-COPY --from=builder /app/build/index.html /usr/share/nginx/html/admin
+RUN cp ./build/index.html /usr/share/nginx/html/admin
 
-COPY --from=builder /app/build/ /usr/share/nginx/html/admin/${COMMIT_HASH}
+RUN cp -r ./build/ /usr/share/nginx/html/admin/${COMMIT_HASH}
 
-EXPOSE 8080
+EXPOSE 8081
 
 ENTRYPOINT ["nginx", "-g", "daemon off;"]
