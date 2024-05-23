@@ -10,6 +10,7 @@ phases:
       - aws --version
       - $(aws ecr get-login --region us-east-1 --no-include-email)
       - REPOSITORY_URI=484537496937.dkr.ecr.us-east-1.amazonaws.com/saran-admin
+      - if echo $CODEBUILD_INITIATOR | grep -qe "-clone$"; then REPOSITORY_URI=$REPOSITORY_URI-clone;ENV_TYPE=clone;fi;
       - if echo $CODEBUILD_INITIATOR | grep -qe "-development$"; then REPOSITORY_URI=$REPOSITORY_URI-development;ENV_TYPE=development;fi;
       - if echo $CODEBUILD_INITIATOR | grep -qe "-staging$"; then REPOSITORY_URI=$REPOSITORY_URI-staging;ENV_TYPE=staging;fi;
       - if echo $CODEBUILD_INITIATOR | grep -qe "-production$"; then REPOSITORY_URI=$REPOSITORY_URI-production;ENV_TYPE=production;fi;
